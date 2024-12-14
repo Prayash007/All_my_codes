@@ -1,0 +1,1 @@
+{"name":"Local: rem1rem2","url":"d:\\Coding\\CP\\codeforces\\rem1rem2.cpp","tests":[{"id":1728110066628,"input":"5\n5\naaaaa\n1\nz\n5\nababa\n14\nbcdaaaabcdaaaa\n20\nabcdefghijklmnopqrst","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Coding\\CP\\codeforces\\rem1rem2.cpp","group":"local","local":true}

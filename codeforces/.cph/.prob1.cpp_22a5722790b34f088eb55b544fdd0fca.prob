@@ -1,0 +1,1 @@
+{"name":"Local: prob1","url":"d:\\Coding\\CP\\codeforces\\prob1.cpp","tests":[{"id":1726843831459,"input":"5\n5\n3 4\n3\n1 2\n6\n4 3\n100\n4 3\n9\n3 3","output":"2\n3\n2\n34\n3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Coding\\CP\\codeforces\\prob1.cpp","group":"local","local":true}
