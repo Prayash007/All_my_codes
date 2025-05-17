@@ -1,75 +1,53 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
-// Comparator to sort by the first value in descending order
-bool comp(pair<int, pair<int, int>> a, pair<int, pair<int, int>> b) {
-    return a.first > b.first; // Sort based on the 'maxi' value in descending order
+vector<int> extract_rgb(const string &binary) {
+    int red = stoi(binary.substr(0, 8), nullptr, 2);
+    int green = stoi(binary.substr(8, 8), nullptr, 2);
+    int blue = stoi(binary.substr(16, 8), nullptr, 2);
+    return {red, green, blue};
 }
 
-void solve() {
-    int n;
-    cin >> n;
+int calculate_distance(const vector<int> &pixel, const vector<int> &color) {
+    int red_diff = pixel[0] - color[0];
+    int green_diff = pixel[1] - color[1];
+    int blue_diff = pixel[2] - color[2];
+    return red_diff * red_diff + green_diff * green_diff + blue_diff * blue_diff;
+}
 
-    vector<vector<int>> vec1;
+string find_closest_color(const string &binary) {
+    vector<int> pixel = extract_rgb(binary);
     
-    // Reading input arrays
-    for (int i = 0; i < n; i++) {
-        vector<int> vec;
-        int m;
-        cin >> m;
-        for (int j = 0; j < m; j++) {
-            int num;
-            cin >> num;
-            vec.push_back(num);
+    vector<pair<string, vector<int>>> colors = {
+        {"Black", {0, 0, 0}}, {"White", {255, 255, 255}}, 
+        {"Red", {255, 0, 0}}, {"Green", {0, 255, 0}}, {"Blue", {0, 0, 255}}
+    };
+
+    int min_distance = INT_MAX;
+    string closest_match;
+    int same_distance_count = 0;
+
+    for (const auto &color : colors) {
+        int distance = calculate_distance(pixel, color.second);
+        
+        if (distance < min_distance) {
+            min_distance = distance;
+            closest_match = color.first;
+            same_distance_count = 1;
+        } else if (distance == min_distance) {
+            same_distance_count++;
         }
-        vec1.push_back(vec);
-    }
-    
-    vector<pair<int, pair<int, int>>> pr;
-    
-    // Processing arrays to get (max of first two smallest, {smallest, second smallest})
-    for (int i = 0; i < n; i++) {
-        // Find the two smallest elements in the current array
-        int min1 = INT_MAX, min2 = INT_MAX;
-        for (int j = 0; j < vec1[i].size(); j++) {
-            int num = vec1[i][j];
-            if (num < min1) {
-                min2 = min1;
-                min1 = num;
-            } else if (num < min2) {
-                min2 = num;
-            }
-        }
-        int maxi = max(min1, min2); // max of the two smallest
-        pr.push_back({maxi, {min1, min2}});
     }
 
-    // Sort by the first value in descending order
-    sort(pr.begin(), pr.end(), comp);
-    
-    int ans = 0;
-    int mini = INT_MAX; // Track the overall minimum
-
-    // Summing up the results
-    for (int i = 0; i < n - 1; i++) {
-        ans += pr[i].first; // Sum the 'maxi' values
-        // Track the minimum value from the ignored pair values
-        mini = min(mini,pr[i].second.first);
-    }
-    
-    // For the last array, take the smallest of its two values
-    int j = min(pr[n - 1].second.first, pr[n - 1].second.second);
-    mini = min(j, mini);
-    ans += mini; // Add the overall minimum to the result
-
-    cout << ans << endl;
+    return (same_distance_count > 1) ? "Ambiguous" : closest_match;
 }
 
 int main() {
-    int test;
-    cin >> test;
-    while (test-- > 0) {
-        solve();
+    vector<string> pixels = {"000000001111111100000110"};
+    
+    for (const string &pixel : pixels) {
+        cout << find_closest_color(pixel) << endl;
     }
+    
     return 0;
 }
